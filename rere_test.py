@@ -125,7 +125,7 @@ class ReReTest(unittest.TestCase):
         self.assertFalse(re.match('kitten'))
         self.assertFalse(re.match('puppypuppy'))
 
-    def test_multiply_single(self):
+    def test_repeat_single_exactly_n_times(self):
         re = Exactly('cat') * 3
 
         self.assertEqual(re.pattern, r'(cat){3}')
@@ -133,8 +133,31 @@ class ReReTest(unittest.TestCase):
 
         self.assertFalse(re.match(''))
         self.assertFalse(re.match('cat'))
+        self.assertFalse(re.match('catcat'))
+        self.assertFalse(re.match('catcatcatcat'))
 
-    def test_multiply_multipart(self):
+    def test_repeat_single_at_least_n_times(self):
+        re = Exactly('cat') * (2, )
+
+        self.assertEqual(re.pattern, r'(cat){2,}')
+        self.assertTrue(re.match('catcat'))
+        self.assertTrue(re.match('catcatcat'))
+
+        self.assertFalse(re.match(''))
+        self.assertFalse(re.match('cat'))
+
+    def test_repeat_single_from_n_to_m_times(self):
+        re = Exactly('cat') * (2, 3)
+
+        self.assertEqual(re.pattern, r'(cat){2,3}')
+        self.assertTrue(re.match('catcat'))
+        self.assertTrue(re.match('catcatcat'))
+
+        self.assertFalse(re.match(''))
+        self.assertFalse(re.match('cat'))
+        self.assertFalse(re.match('catcatcatcat'))
+
+    def test_repeat_multipart_exactly_n_times(self):
         re = (Exactly('cat') + Exactly('dog')) * 3
 
         self.assertEqual(re.pattern, r'(catdog){3}')
@@ -142,6 +165,29 @@ class ReReTest(unittest.TestCase):
 
         self.assertFalse(re.match(''))
         self.assertFalse(re.match('catdog'))
+        self.assertFalse(re.match('catdogcatdog'))
+        self.assertFalse(re.match('catdogcatdogcatdogcatdog'))
+
+    def test_repeat_multipart_at_least_n_times(self):
+        re = (Exactly('cat') + Exactly('dog')) * (2, )
+
+        self.assertEqual(re.pattern, r'(catdog){2,}')
+        self.assertTrue(re.match('catdogcatdog'))
+        self.assertTrue(re.match('catdogcatdogcatdogcatdog'))
+
+        self.assertFalse(re.match(''))
+        self.assertFalse(re.match('catdog'))
+
+    def test_repeat_multipart_from_n_to_m_times(self):
+        re = (Exactly('cat') + Exactly('dog')) * (2, 3)
+
+        self.assertEqual(re.pattern, r'(catdog){2,3}')
+        self.assertTrue(re.match('catdogcatdog'))
+        self.assertTrue(re.match('catdogcatdogcatdog'))
+
+        self.assertFalse(re.match(''))
+        self.assertFalse(re.match('catdog'))
+        self.assertFalse(re.match('catdogcatdogcatdogcatdog'))
 
     def test_or(self):
         re = Exactly('cat') | Exactly('dog') | Exactly('snake')

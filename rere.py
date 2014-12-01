@@ -61,7 +61,7 @@ class RegexBase(object):
 
     def __mul__(self, amt):
         """Use * to repeat RegexBase amt number of times"""
-        return QuantifiedRegex(self, amt)
+        return RepeatableRegex(self, amt)
 
     def __or__(self, friend):
         """Use | for "or" functionality:
@@ -163,18 +163,6 @@ class MultipartRegex(RegexBase):
         return MultipartRegex(self.parts + [friend])
 
 
-class QuantifiedRegex(RegexBase):
-    """Sets quantifier for Regexs"""
-
-    def __init__(self, base, quantifier):
-        self.base = base
-        self.quantifier = quantifier
-
-    def re_str(self):
-        """Generate regex as a string"""
-        return '({}){{{}}}'.format(self.base.re_str(), self.quantifier)
-
-
 class OrRegex(RegexBase):
     """This class is called when the user uses | to specify "or"
 
@@ -243,6 +231,28 @@ class ZeroOrOneRegex(RegexBase):
 
     def re_str(self):
         return '({})?'.format(self.part.re_str())
+
+
+class RepeatableRegex(RegexBase):
+    """Defines how much times Regex must be repeated"""
+
+    def __init__(self, base, times):
+        self.base = base
+        self.times = times
+
+    def re_str(self):
+        """Generate regex as a string"""
+        times = self.times
+
+        if isinstance(times, (tuple, list)):
+            try:
+                # X{n,m} case (at least n but not more than m times)
+                times = "{},{}".format(*times)
+            except IndexError:
+                # X{n,} case (at least n times)
+                times = str(times[0]) + ","
+
+        return '({}){{{}}}'.format(self.base.re_str(), times)
 
 
 class Exactly(RegexBase):
