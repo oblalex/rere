@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """
 rere: regex redone
 ------------------
@@ -11,7 +12,9 @@ rere: regex redone
 Isn't this better than `regex.compile('\\\\$\\\\d\\\\d(\\\\.\\\\d\\\\d)?')`?
 
 """
+
 import re
+
 
 class RegexBase(object):
     """Base class for smart regex"""
@@ -123,6 +126,7 @@ class RegexBase(object):
         """
         return ZeroOrOneRegex(self)
 
+
 class RawRegex(RegexBase):
     """Match a user specified raw regex"""
 
@@ -131,6 +135,7 @@ class RawRegex(RegexBase):
 
     def re_str(self):
         return self.pattern
+
 
 class MultipartRegex(RegexBase):
     """Container of RegexParts"""
@@ -151,6 +156,7 @@ class MultipartRegex(RegexBase):
         """Specify how many times a MultipartRegex should be repeated"""
         return MultipartRegex(self.parts * amt)
 
+
 class OrRegex(RegexBase):
     """This class is called when the user uses | to specify "or"
 
@@ -168,6 +174,7 @@ class OrRegex(RegexBase):
         """Use | to use or"""
         return OrRegex(self.parts + [friend])
 
+
 class OneOrMoreRegex(RegexBase):
     """This should not ever be called by the user.
 
@@ -183,6 +190,7 @@ class OneOrMoreRegex(RegexBase):
 
     def re_str(self):
         return '({})+'.format(self.part.re_str())
+
 
 class ZeroOrMoreRegex(RegexBase):
     """This should not ever be called by the user.
@@ -201,6 +209,7 @@ class ZeroOrMoreRegex(RegexBase):
     def re_str(self):
         return '({})*'.format(self.part.re_str())
 
+
 class ZeroOrOneRegex(RegexBase):
     """This should not ever be called by the user.
 
@@ -217,6 +226,7 @@ class ZeroOrOneRegex(RegexBase):
     def re_str(self):
         return '({})?'.format(self.part.re_str())
 
+
 class Exactly(RegexBase):
     """Allows a user to specify the exactly string they want matched against"""
 
@@ -225,6 +235,7 @@ class Exactly(RegexBase):
 
     def re_str(self):
         return re.escape(self.string)
+
 
 class Group(RegexBase):
     """Specify a group name for a regex part

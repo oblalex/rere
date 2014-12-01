@@ -1,5 +1,9 @@
+# -*- coding: utf-8 -*-
+
 import unittest
+
 from rere import *
+
 
 class ReReTest(unittest.TestCase):
 
@@ -22,7 +26,7 @@ class ReReTest(unittest.TestCase):
         self.assertFalse(re.match('$2+$2+$1'))
         self.assertTrue(re.match('$2+$2'))
         self.assertTrue(re.match_prefix('$2+$2+$1'))
-    
+
     def test_any_char(self):
         re = AnyChar
         self.assertTrue(re.match('a'))
@@ -45,7 +49,7 @@ class ReReTest(unittest.TestCase):
         self.assertTrue(re.match('A'))
         self.assertFalse(re.match('1'))
         self.assertFalse(re.match('a2'))
-        
+
     def test_whitespace(self):
         re = Whitespace
         self.assertTrue(re.match(' '))
@@ -114,6 +118,7 @@ class ReReTest(unittest.TestCase):
         self.assertTrue(match)
         self.assertEqual(match.group('first_name'), 'Malea')
         self.assertEqual(match.group('last_name'), 'Grubb')
+
 
 if __name__ == '__main__':
     unittest.main()
