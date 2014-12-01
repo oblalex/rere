@@ -27,7 +27,7 @@ class RegexBase(object):
         function.
 
         """
-        return re.match(self.re_str() + '$', string)
+        return re.match(self.pattern + '$', string)
 
     def match_prefix(self, string):
         """Returns Python MatchObject if prefix match.
@@ -36,7 +36,7 @@ class RegexBase(object):
         re.match(). For example, "cat" will match "catapult."
 
         """
-        return re.match(self.re_str(), string)
+        return re.match(self.pattern, string)
 
     def search(self, string):
         """Scans through string looking for match.
@@ -44,7 +44,7 @@ class RegexBase(object):
         If a match is found, returns MatchObject, otherwise returns None.
 
         """
-        return re.search(self.re_str(), string)
+        return re.search(self.pattern, string)
 
     def re_str(self):
         """This function is used to convert a string to a regex string pattern.
@@ -84,6 +84,16 @@ class RegexBase(object):
         m.group('lastname') # ==> "Grubb"
         """
         return Group(self, name)
+
+    @property
+    def pattern(self):
+        """Show final cached regex pattern.
+        """
+        _pattern = getattr(self, '_pattern', None)
+        if _pattern is None:
+            _pattern = self.re_str()
+            self._pattern = _pattern
+        return _pattern
 
     @property
     def one_or_more(self):
@@ -131,10 +141,10 @@ class RawRegex(RegexBase):
     """Match a user specified raw regex"""
 
     def __init__(self, pattern):
-        self.pattern = pattern
+        self._pattern = pattern
 
     def re_str(self):
-        return self.pattern
+        return self._pattern
 
 
 class MultipartRegex(RegexBase):

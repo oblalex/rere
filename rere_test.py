@@ -9,7 +9,9 @@ from rere import *
 class ReReTest(unittest.TestCase):
 
     def test_raw_regex(self):
-        re = RawRegex('ab*')
+        re = RawRegex(r'ab*')
+
+        self.assertEqual(re.pattern, r'ab*')
 
         self.assertTrue(re.match('a'))
         self.assertTrue(re.match('ab'))
@@ -24,6 +26,8 @@ class ReReTest(unittest.TestCase):
 
     def test_exactly(self):
         re = Exactly('$2+$2')
+
+        self.assertEqual(re.pattern, r'\$2\+\$2')
 
         self.assertTrue(re.match('$2+$2'))
         self.assertTrue(re.match_prefix('$2+$2+$1'))
@@ -80,6 +84,8 @@ class ReReTest(unittest.TestCase):
     def test_multipart_regex(self):
         re = Exactly('123') + Anything + Exactly('a\n')
 
+        self.assertEqual(re.pattern, '123((.|\\n))*a\\\n')
+
         self.assertTrue(re.match('123456a\n'))
         self.assertTrue(re.match('123a\na\n'))
 
@@ -88,6 +94,8 @@ class ReReTest(unittest.TestCase):
 
     def test_one_or_more(self):
         re = Exactly('puppy').one_or_more
+
+        self.assertEqual(re.pattern, r'(puppy)+')
 
         self.assertTrue(re.match('puppy'))
         self.assertTrue(re.match('puppypuppy'))
@@ -98,6 +106,8 @@ class ReReTest(unittest.TestCase):
     def test_zero_or_more(self):
         re = Exactly('puppy').zero_or_more
 
+        self.assertEqual(re.pattern, r'(puppy)*')
+
         self.assertTrue(re.match(''))
         self.assertTrue(re.match('puppy'))
         self.assertTrue(re.match('puppypuppy'))
@@ -106,6 +116,8 @@ class ReReTest(unittest.TestCase):
 
     def test_zero_or_one(self):
         re = Exactly('puppy').zero_or_one
+
+        self.assertEqual(re.pattern, r'(puppy)?')
 
         self.assertTrue(re.match(''))
         self.assertTrue(re.match('puppy'))
@@ -116,6 +128,8 @@ class ReReTest(unittest.TestCase):
     def test_multiply_single(self):
         re = Exactly('cat') * 3
 
+        # self.assertEqual(re.pattern, r'(cat){3}')
+
         self.assertTrue(re.match('catcatcat'))
 
         self.assertFalse(re.match(''))
@@ -124,6 +138,8 @@ class ReReTest(unittest.TestCase):
     def test_multiply_multipart(self):
         re = (Exactly('cat') + Exactly('dog')) * 3
 
+        # self.assertEqual(re.pattern, r'(catdog){3}')
+
         self.assertTrue(re.match('catdogcatdogcatdog'))
 
         self.assertFalse(re.match(''))
@@ -131,6 +147,8 @@ class ReReTest(unittest.TestCase):
 
     def test_or(self):
         re = Exactly('cat') | Exactly('dog') | Exactly('snake')
+
+        self.assertEqual(re.pattern, r'(cat|dog|snake)')
 
         self.assertTrue(re.match('cat'))
         self.assertTrue(re.match('dog'))
@@ -144,11 +162,23 @@ class ReReTest(unittest.TestCase):
             + Whitespace.one_or_more
             + Letter.one_or_more.as_group('last_name')
         )
+        self.assertEqual(
+            re.pattern,
+            r'(?P<first_name>([A-Za-z])+)(\s)+(?P<last_name>([A-Za-z])+)'
+        )
+
         match = re.match('Malea Grubb')
 
         self.assertTrue(match)
         self.assertEqual(match.group('first_name'), 'Malea')
         self.assertEqual(match.group('last_name'), 'Grubb')
+
+    def test_pattern(self):
+        re = Exactly(r'hi') + Whitespace.one_or_more + Exactly(r'there')
+
+        self.assertEqual(re.pattern, r'hi(\s)+there')
+        self.assertIsNot(re.re_str(), re.re_str())
+        self.assertIs(re.pattern, re.pattern)
 
 
 if __name__ == '__main__':
