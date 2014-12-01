@@ -128,8 +128,7 @@ class ReReTest(unittest.TestCase):
     def test_multiply_single(self):
         re = Exactly('cat') * 3
 
-        # self.assertEqual(re.pattern, r'(cat){3}')
-
+        self.assertEqual(re.pattern, r'(cat){3}')
         self.assertTrue(re.match('catcatcat'))
 
         self.assertFalse(re.match(''))
@@ -138,8 +137,7 @@ class ReReTest(unittest.TestCase):
     def test_multiply_multipart(self):
         re = (Exactly('cat') + Exactly('dog')) * 3
 
-        # self.assertEqual(re.pattern, r'(catdog){3}')
-
+        self.assertEqual(re.pattern, r'(catdog){3}')
         self.assertTrue(re.match('catdogcatdogcatdog'))
 
         self.assertFalse(re.match(''))
@@ -177,8 +175,8 @@ class ReReTest(unittest.TestCase):
         re = Exactly(r'hi') + Whitespace.one_or_more + Exactly(r'there')
 
         self.assertEqual(re.pattern, r'hi(\s)+there')
-        self.assertIsNot(re.re_str(), re.re_str())
         self.assertIs(re.pattern, re.pattern)
+        self.assertIsNot(re.re_str(), re.re_str())
 
 
 if __name__ == '__main__':

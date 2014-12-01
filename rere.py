@@ -61,7 +61,7 @@ class RegexBase(object):
 
     def __mul__(self, amt):
         """Use * to repeat RegexBase amt number of times"""
-        return MultipartRegex([self] * amt)
+        return QuantifiedRegex(self, amt)
 
     def __or__(self, friend):
         """Use | for "or" functionality:
@@ -162,9 +162,17 @@ class MultipartRegex(RegexBase):
         """Add a Regex part to a MultipartRegex"""
         return MultipartRegex(self.parts + [friend])
 
-    def __mul__(self, amt):
-        """Specify how many times a MultipartRegex should be repeated"""
-        return MultipartRegex(self.parts * amt)
+
+class QuantifiedRegex(RegexBase):
+    """Sets quantifier for Regexs"""
+
+    def __init__(self, base, quantifier):
+        self.base = base
+        self.quantifier = quantifier
+
+    def re_str(self):
+        """Generate regex as a string"""
+        return '({}){{{}}}'.format(self.base.re_str(), self.quantifier)
 
 
 class OrRegex(RegexBase):
