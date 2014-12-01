@@ -1,0 +1,4 @@
+1. Update readme: mention patterns, update examples with repeatable expressions.
+2. convert re_str to __str__.
+3. Introduce another shortcuts.
+4. Update gh-pages.
