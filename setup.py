@@ -7,7 +7,7 @@ rere: regex redone
 
     money_regex = Exactly('$') + Digit*2 + (Exactly('.') + Digit*2).zero_or_one
 
-    regex.match('$23.95') # ==> True
+    regex.match('$23.95') # ==> MatchObject(...)
 
 Isn't this better than `regex.compile('\\\\$\\\\d\\\\d(\\\\.\\\\d\\\\d)?')`?
 
