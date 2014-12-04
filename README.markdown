@@ -150,7 +150,54 @@ regex = Exactly('hello') + Anything
 regex.match('hello!') # ==> MatchObject(...)
 regex.match('hello!!') # ==> MatchObject(...)
 regex.match('hello\n') # ==> MatchObject(...)
-regex.match('Hellohello') #==> None
+regex.match('Hellohello') # ==> None
+```
+
+#### `StringStart`
+
+```python
+StringStart
+```
+
+Use `StringStart` when you want to match beginning of string.
+
+```python
+regex = StringStart + Exactly(r'pony') + Anything
+regex.match('pony') # ==> MatchObject(...)
+regex.match('pony is a little horse') # ==> MatchObject(...)
+regex.match('') # ==> None
+regex.match(' pony ') # ==> None
+```
+
+#### `StringEnd`
+
+```python
+StringEnd
+```
+
+Use `StringEnd` when you want to match end of string.
+
+```python
+regex = Anything + Exactly(r'zebra') + StringEnd
+regex.match('zebra') # ==> MatchObject(...)
+regex.match('striped as zebra') # ==> MatchObject(...)
+regex.match('') # ==> None
+regex.match(' zebra ') # ==> None
+```
+
+#### Word boundaries
+
+```python
+WordStart
+WordEnd
+```
+
+Use `WordStart` and `WordEnd` when you want to match word boundaries.
+
+```python
+regex = Anything + WordStart + Exactly('is') + WordEnd + Anything
+regex.match('This island is beautiful.') # ==> MatchObject(...)
+regex.match('This island was beautiful.') # ==> None
 ```
 
 #### `RawRegex`
@@ -261,6 +308,26 @@ use the `*` sign.
 regex = Exactly('cat') * 2
 regex.match('catcat') # ==> MatchObject(...)
 ```
+
+You can specify minimal number of repetitions:
+
+```python
+regex = Exactly('cat') * (2, )
+regex.match('cat') # ==> None
+regex.match('catcat') # ==> MatchObject(...)
+regex.match('catcatcat') # ==> MatchObject(...)
+```
+
+And you can also specify maximal number of repetitions:
+
+```python
+regex = Exactly('cat') * (2, 3)
+regex.match('cat') # ==> None
+regex.match('catcat') # ==> MatchObject(...)
+regex.match('catcatcat') # ==> MatchObject(...)
+regex.match('catcatcatcat') # ==> None
+```
+
 
 #### Or (`|`)
 
