@@ -1,6 +1,4 @@
-1. Update readme: mention patterns, update examples with repeatable expressions.
-2. convert re_str to __str__.
-3. Introduce another shortcuts.
-4. Add parsing actions for groups.
-5. Update gh-pages.
-6. Update setup.py.
+- Introduce another shortcuts.
+- Add parsing actions for groups.
+- Update readme: mention patterns, update examples with repeatable expressions.
+- Update setup.py.

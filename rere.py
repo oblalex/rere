@@ -298,5 +298,8 @@ Whitespace = RawRegex(r'\s')
 # Shortcut to match any string of any length (not just one char)
 Anything = AnyChar.zero_or_more
 
+# Shortcut to match beginning of string
+StringStart = RawRegex(r'^')
+
 # Re-enable checks for later code.
 # pylint: enable=invalid-name

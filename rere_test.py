@@ -224,6 +224,14 @@ class ReReTest(unittest.TestCase):
         self.assertIs(re.pattern, re.pattern)
         self.assertIsNot(re.re_str(), re.re_str())
 
+    def test_string_start(self):
+        re = StringStart + Exactly(r'pony')
+
+        self.assertTrue(re.match('pony'))
+
+        self.assertFalse(re.match(''))
+        self.assertFalse(re.match(' pony '))
+
 
 if __name__ == '__main__':
     unittest.main()
