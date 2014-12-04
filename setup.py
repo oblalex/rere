@@ -18,14 +18,31 @@ from setuptools import setup
 
 setup(
     name='rere',
-    version='0.1.0',
+    version='0.2.0',
     description='regex redone',
     long_description=__doc__,
-    keywords=['re', 'regex', 'regular', 'expression', ],
+    keywords=[
+        're', 'regex', 'regular', 'expression',
+    ],
     url='http://www.maleagrubb.com/rere',
     license='Apache 2',
     author='Malea Grubb',
     author_email='maleangrubb@gmail.com',
-    py_modules=['rere'],
-    platforms=['any'],
+    py_modules=[
+        'rere',
+    ],
+    classifiers=[
+        'Development Status :: 3 - Alpha',
+        'Intended Audience :: Developers',
+        'License :: OSI Approved :: Apache Software License',
+        'Natural Language :: English',
+        'Operating System :: OS Independent',
+        'Programming Language :: Python :: 2.7',
+        'Programming Language :: Python :: 3.3',
+        'Programming Language :: Python :: 3.4',
+        'Topic :: Software Development :: Libraries',
+    ],
+    platforms=[
+        'any',
+    ],
 )
