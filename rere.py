@@ -301,5 +301,8 @@ Anything = AnyChar.zero_or_more
 # Shortcut to match beginning of string
 StringStart = RawRegex(r'^')
 
+# Shortcut to match end of string
+StringEnd = RawRegex(r'$')
+
 # Re-enable checks for later code.
 # pylint: enable=invalid-name

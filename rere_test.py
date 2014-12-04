@@ -225,12 +225,22 @@ class ReReTest(unittest.TestCase):
         self.assertIsNot(re.re_str(), re.re_str())
 
     def test_string_start(self):
-        re = StringStart + Exactly(r'pony')
+        re = StringStart + Exactly(r'pony') + Anything.zero_or_more
 
         self.assertTrue(re.match('pony'))
+        self.assertTrue(re.match('pony is a little horse'))
 
         self.assertFalse(re.match(''))
         self.assertFalse(re.match(' pony '))
+
+    def test_string_end(self):
+        re = Anything.zero_or_more + Exactly(r'zebra') + StringEnd
+
+        self.assertTrue(re.match('zebra'))
+        self.assertTrue(re.match('striped as zebra'))
+
+        self.assertFalse(re.match(''))
+        self.assertFalse(re.match(' zebra '))
 
 
 if __name__ == '__main__':
