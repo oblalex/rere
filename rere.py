@@ -304,5 +304,8 @@ StringStart = RawRegex(r'^')
 # Shortcut to match end of string
 StringEnd = RawRegex(r'$')
 
+# Shortcuts to match word boundaries
+WordStart = WordEnd = RawRegex(r'\b')
+
 # Re-enable checks for later code.
 # pylint: enable=invalid-name
